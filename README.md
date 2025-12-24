@@ -161,7 +161,7 @@ De applicatie bevat uitgebreide validatie:
 ### Styling
 Het project gebruikt MudBlazor voor Material Design UI components met een paarse theme.
 
-##Licentie
+## Licentie
 
 Dit is een starter kit project voor AOV mutatie aanvragen.
 
