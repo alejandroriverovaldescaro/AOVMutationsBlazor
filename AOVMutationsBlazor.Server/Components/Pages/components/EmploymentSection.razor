@@ -8,8 +8,7 @@
                           Variant="Variant.Outlined" 
                           Required="true"
                           Editable="true"
-                          DateFormat="dd-MM-yyyy"
-                          For="@(() => Model.StartDate)" />
+                          DateFormat="dd-MM-yyyy" />
         </MudItem>
         <MudItem xs="12" md="6">
             <MudDatePicker @bind-Date="endDate" 
@@ -17,8 +16,7 @@
                           Variant="Variant.Outlined" 
                           Editable="true"
                           DateFormat="dd-MM-yyyy"
-                          Clearable="true"
-                          For="@(() => Model.EndDate)" />
+                          Clearable="true" />
         </MudItem>
         <MudItem xs="12" md="6">
             <MudSelect @bind-Value="Model.ContractType" 

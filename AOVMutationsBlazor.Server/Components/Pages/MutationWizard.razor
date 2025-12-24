@@ -12,45 +12,46 @@
 <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
     
-    <MudStepper @ref="_stepper">
-        
-        <MudStep Title="Type Mutatie">
-            <MudPaper Class="pa-4">
-                <MudText Typo="Typo.h6" GutterBottom="true">Selecteer Type Mutatie</MudText>
-                <MudRadioGroup @bind-Value="model.MutationType">
-                    <MudRadio Value="@("Inschrijving")" Color="Color.Primary">
-                        <MudText>Inschrijving - Nieuwe werknemer aanmelden</MudText>
-                    </MudRadio>
-                    <MudRadio Value="@("Wijziging")" Color="Color.Primary">
-                        <MudText>Wijziging - Wijziging van gegevens</MudText>
-                    </MudRadio>
-                    <MudRadio Value="@("Afmelding")" Color="Color.Primary">
-                        <MudText>Afmelding - Werknemer afmelden</MudText>
-                    </MudRadio>
-                </MudRadioGroup>
-                
-                <MudTextField @bind-Value="model.RequestNumber" 
-                              Label="Aanvraagnummer" 
-                              Variant="Variant.Outlined" 
-                              Class="mt-4"
-                              ReadOnly="true" />
-            </MudPaper>
-        </MudStep>
-        
-        <MudStep Title="Persoonsgegevens">
-            <PersonSection Model="@model.Person" />
-        </MudStep>
-        
-        <MudStep Title="Adresgegevens">
-            <AddressSection Model="@model.Address" />
-        </MudStep>
-        
-        <MudStep Title="Dienstverband">
-            <EmploymentSection Model="@model.Employment" />
-        </MudStep>
-        
-        <MudStep Title="Overzicht">
-            <MudPaper Class="pa-4">
+    <MudPaper Class="pa-4 mt-4">
+        <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+            
+            <MudTabPanel Text="Type Mutatie" Icon="@Icons.Material.Filled.Assignment">
+                <MudPaper Class="pa-4" Elevation="0">
+                    <MudText Typo="Typo.h6" GutterBottom="true">Selecteer Type Mutatie</MudText>
+                    <MudRadioGroup @bind-Value="model.MutationType">
+                        <MudRadio Value="@("Inschrijving")" Color="Color.Primary">
+                            <MudText>Inschrijving - Nieuwe werknemer aanmelden</MudText>
+                        </MudRadio>
+                        <MudRadio Value="@("Wijziging")" Color="Color.Primary">
+                            <MudText>Wijziging - Wijziging van gegevens</MudText>
+                        </MudRadio>
+                        <MudRadio Value="@("Afmelding")" Color="Color.Primary">
+                            <MudText>Afmelding - Werknemer afmelden</MudText>
+                        </MudRadio>
+                    </MudRadioGroup>
+                    
+                    <MudTextField @bind-Value="model.RequestNumber" 
+                                  Label="Aanvraagnummer" 
+                                  Variant="Variant.Outlined" 
+                                  Class="mt-4"
+                                  ReadOnly="true" />
+                </MudPaper>
+            </MudTabPanel>
+            
+            <MudTabPanel Text="Persoonsgegevens" Icon="@Icons.Material.Filled.Person">
+                <PersonSection Model="@model.Person" />
+            </MudTabPanel>
+            
+            <MudTabPanel Text="Adresgegevens" Icon="@Icons.Material.Filled.Home">
+                <AddressSection Model="@model.Address" />
+            </MudTabPanel>
+            
+            <MudTabPanel Text="Dienstverband" Icon="@Icons.Material.Filled.Work">
+                <EmploymentSection Model="@model.Employment" />
+            </MudTabPanel>
+            
+            <MudTabPanel Text="Overzicht" Icon="@Icons.Material.Filled.CheckCircle">
+                <MudPaper Class="pa-4" Elevation="0">
                 <MudText Typo="Typo.h6" GutterBottom="true">Controleer uw gegevens</MudText>
                 
                 <MudText Typo="Typo.subtitle1" Class="mt-4"><strong>Type Mutatie:</strong> @model.MutationType</MudText>
@@ -76,22 +77,21 @@
                 <MudText Typo="Typo.body2">Startdatum: @model.Employment.StartDate.ToShortDateString()</MudText>
                 <MudText Typo="Typo.body2">Contracttype: @model.Employment.ContractType</MudText>
                 <MudText Typo="Typo.body2">Functie: @model.Employment.JobTitle</MudText>
-                
-                <MudButton ButtonType="ButtonType.Submit" 
-                          Variant="Variant.Filled" 
-                          Color="Color.Success" 
-                          StartIcon="@Icons.Material.Filled.Save"
-                          Class="mt-4">
-                    Opslaan
-                </MudButton>
-            </MudPaper>
-        </MudStep>
-        
-    </MudStepper>
+                    <MudButton ButtonType="ButtonType.Submit" 
+                              Variant="Variant.Filled" 
+                              Color="Color.Success" 
+                              StartIcon="@Icons.Material.Filled.Save"
+                              Class="mt-4">
+                        Opslaan
+                    </MudButton>
+                </MudPaper>
+            </MudTabPanel>
+            
+        </MudTabs>
+    </MudPaper>
 </EditForm>
 
 @code {
-    private MudStepper _stepper = null!;
     private MutationRequestViewModel model = new();
 
     protected override void OnInitialized()

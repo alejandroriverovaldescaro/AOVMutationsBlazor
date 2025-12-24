@@ -12,12 +12,19 @@ builder.Services.AddRazorComponents()
 // Add MudBlazor services
 builder.Services.AddMudServices();
 
-// Add DbContext with SQL Server
-builder.Services.AddDbContext<AOVMutationsDbContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        sqlOptions => sqlOptions.EnableRetryOnFailure()
-    ));
+// Add DbContext with SQL Server (or InMemory for testing)
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (string.IsNullOrEmpty(connectionString) || connectionString.Contains("localdb"))
+{
+    // Use InMemory database for testing/demo purposes
+    builder.Services.AddDbContext<AOVMutationsDbContext>(options =>
+        options.UseInMemoryDatabase("AOVMutationsDb"));
+}
+else
+{
+    builder.Services.AddDbContext<AOVMutationsDbContext>(options =>
+        options.UseSqlServer(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure()));
+}
 
 var app = builder.Build();
 

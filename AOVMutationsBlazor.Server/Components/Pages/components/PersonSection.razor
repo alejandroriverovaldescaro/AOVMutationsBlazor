@@ -50,14 +50,12 @@
                           Required="true"
                           Editable="true"
                           DateFormat="dd-MM-yyyy"
-                          MaxDate="DateTime.Today"
-                          For="@(() => Model.DateOfBirth)" />
+                          MaxDate="DateTime.Today" />
         </MudItem>
         <MudItem xs="12" md="6">
             <MudSelect @bind-Value="Model.Gender" 
                        Label="Geslacht" 
-                       Variant="Variant.Outlined"
-                       For="@(() => Model.Gender)">
+                       Variant="Variant.Outlined">
                 <MudSelectItem Value="@("M")">Man</MudSelectItem>
                 <MudSelectItem Value="@("V")">Vrouw</MudSelectItem>
                 <MudSelectItem Value="@("X")">Onbekend/Anders</MudSelectItem>
