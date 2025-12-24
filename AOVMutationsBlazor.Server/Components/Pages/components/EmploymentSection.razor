@@ -1,0 +1,122 @@
+<MudPaper Class="pa-4">
+    <MudText Typo="Typo.h6" GutterBottom="true">Dienstverband</MudText>
+    
+    <MudGrid>
+        <MudItem xs="12" md="6">
+            <MudDatePicker @bind-Date="startDate" 
+                          Label="Startdatum" 
+                          Variant="Variant.Outlined" 
+                          Required="true"
+                          Editable="true"
+                          DateFormat="dd-MM-yyyy" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudDatePicker @bind-Date="endDate" 
+                          Label="Einddatum (optioneel)" 
+                          Variant="Variant.Outlined" 
+                          Editable="true"
+                          DateFormat="dd-MM-yyyy"
+                          Clearable="true" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudSelect @bind-Value="Model.ContractType" 
+                       Label="Contracttype" 
+                       Variant="Variant.Outlined" 
+                       Required="true"
+                       For="@(() => Model.ContractType)">
+                <MudSelectItem Value="@("Vast")">Vast contract</MudSelectItem>
+                <MudSelectItem Value="@("Tijdelijk")">Tijdelijk contract</MudSelectItem>
+                <MudSelectItem Value="@("Payroll")">Payroll</MudSelectItem>
+                <MudSelectItem Value="@("Stage")">Stage</MudSelectItem>
+                <MudSelectItem Value="@("Uitzend")">Uitzendkracht</MudSelectItem>
+            </MudSelect>
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudSelect @bind-Value="Model.EmploymentStatus" 
+                       Label="Status" 
+                       Variant="Variant.Outlined"
+                       For="@(() => Model.EmploymentStatus)">
+                <MudSelectItem Value="@("Actief")">Actief</MudSelectItem>
+                <MudSelectItem Value="@("Beëindigd")">Beëindigd</MudSelectItem>
+                <MudSelectItem Value="@("Geschorst")">Geschorst</MudSelectItem>
+            </MudSelect>
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField @bind-Value="Model.JobTitle" 
+                          Label="Functie" 
+                          Variant="Variant.Outlined"
+                          For="@(() => Model.JobTitle)" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField @bind-Value="Model.Department" 
+                          Label="Afdeling" 
+                          Variant="Variant.Outlined"
+                          For="@(() => Model.Department)" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudNumericField @bind-Value="Model.SalaryAmount" 
+                            Label="Salaris" 
+                            Variant="Variant.Outlined"
+                            Step="0.01M"
+                            Min="0M"
+                            Format="C2"
+                            Culture="@(new System.Globalization.CultureInfo("nl-NL"))"
+                            For="@(() => Model.SalaryAmount)" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudSelect @bind-Value="Model.SalaryPeriod" 
+                       Label="Salaris periode" 
+                       Variant="Variant.Outlined"
+                       For="@(() => Model.SalaryPeriod)">
+                <MudSelectItem Value="@("Per maand")">Per maand</MudSelectItem>
+                <MudSelectItem Value="@("Per 4 weken")">Per 4 weken</MudSelectItem>
+                <MudSelectItem Value="@("Per week")">Per week</MudSelectItem>
+                <MudSelectItem Value="@("Per uur")">Per uur</MudSelectItem>
+            </MudSelect>
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudNumericField @bind-Value="Model.WorkHoursPerWeek" 
+                            Label="Werkuren per week" 
+                            Variant="Variant.Outlined"
+                            Step="0.5M"
+                            Min="0M"
+                            Max="168M"
+                            For="@(() => Model.WorkHoursPerWeek)" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField @bind-Value="Model.IncomeCode" 
+                          Label="Inkomstencode (SZV)" 
+                          Variant="Variant.Outlined"
+                          For="@(() => Model.IncomeCode)" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField @bind-Value="Model.SectorCode" 
+                          Label="Sectorcode" 
+                          Variant="Variant.Outlined"
+                          For="@(() => Model.SectorCode)" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudSwitch @bind-Value="Model.IsAOVInsured" 
+                      Label="AOV verzekerd" 
+                      Color="Color.Primary"
+                      For="@(() => Model.IsAOVInsured)" />
+        </MudItem>
+    </MudGrid>
+</MudPaper>
+
+@code {
+    [Parameter]
+    public EmploymentViewModel Model { get; set; } = new();
+
+    private DateTime? startDate
+    {
+        get => Model.StartDate == default ? null : Model.StartDate;
+        set => Model.StartDate = value ?? default;
+    }
+
+    private DateTime? endDate
+    {
+        get => Model.EndDate;
+        set => Model.EndDate = value;
+    }
+}

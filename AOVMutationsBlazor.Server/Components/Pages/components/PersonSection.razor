@@ -1,0 +1,104 @@
+<MudPaper Class="pa-4">
+    <MudText Typo="Typo.h6" GutterBottom="true">Persoonsgegevens</MudText>
+    
+    <MudGrid>
+        <MudItem xs="12" md="6">
+            <MudTextField @bind-Value="Model.BSN" 
+                          Label="BSN (Burgerservicenummer)" 
+                          Variant="Variant.Outlined" 
+                          Required="true"
+                          MaxLength="9"
+                          HelperText="9 cijfers zonder spaties"
+                          For="@(() => Model.BSN)" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField @bind-Value="Model.EmployeeNumber" 
+                          Label="Personeelsnummer" 
+                          Variant="Variant.Outlined"
+                          For="@(() => Model.EmployeeNumber)" />
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudTextField @bind-Value="Model.FirstName" 
+                          Label="Voornaam" 
+                          Variant="Variant.Outlined" 
+                          Required="true"
+                          For="@(() => Model.FirstName)" />
+        </MudItem>
+        <MudItem xs="12" md="2">
+            <MudTextField @bind-Value="Model.Initials" 
+                          Label="Initialen" 
+                          Variant="Variant.Outlined"
+                          For="@(() => Model.Initials)" />
+        </MudItem>
+        <MudItem xs="12" md="2">
+            <MudTextField @bind-Value="Model.Prefix" 
+                          Label="Tussenvoegsel" 
+                          Variant="Variant.Outlined"
+                          For="@(() => Model.Prefix)" />
+        </MudItem>
+        <MudItem xs="12" md="4">
+            <MudTextField @bind-Value="Model.LastName" 
+                          Label="Achternaam" 
+                          Variant="Variant.Outlined" 
+                          Required="true"
+                          For="@(() => Model.LastName)" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudDatePicker @bind-Date="dateOfBirth" 
+                          Label="Geboortedatum" 
+                          Variant="Variant.Outlined" 
+                          Required="true"
+                          Editable="true"
+                          DateFormat="dd-MM-yyyy"
+                          MaxDate="DateTime.Today" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudSelect @bind-Value="Model.Gender" 
+                       Label="Geslacht" 
+                       Variant="Variant.Outlined">
+                <MudSelectItem Value="@("M")">Man</MudSelectItem>
+                <MudSelectItem Value="@("V")">Vrouw</MudSelectItem>
+                <MudSelectItem Value="@("X")">Onbekend/Anders</MudSelectItem>
+            </MudSelect>
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField @bind-Value="Model.PlaceOfBirth" 
+                          Label="Geboorteplaats" 
+                          Variant="Variant.Outlined"
+                          For="@(() => Model.PlaceOfBirth)" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField @bind-Value="Model.CountryOfBirth" 
+                          Label="Geboorteland (ISO code)" 
+                          Variant="Variant.Outlined"
+                          MaxLength="3"
+                          HelperText="bijv. NLD voor Nederland"
+                          For="@(() => Model.CountryOfBirth)" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField @bind-Value="Model.Email" 
+                          Label="E-mail" 
+                          Variant="Variant.Outlined"
+                          InputType="InputType.Email"
+                          For="@(() => Model.Email)" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField @bind-Value="Model.PhoneNumber" 
+                          Label="Telefoonnummer" 
+                          Variant="Variant.Outlined"
+                          InputType="InputType.Telephone"
+                          For="@(() => Model.PhoneNumber)" />
+        </MudItem>
+    </MudGrid>
+</MudPaper>
+
+@code {
+    [Parameter]
+    public PersonViewModel Model { get; set; } = new();
+
+    private DateTime? dateOfBirth
+    {
+        get => Model.DateOfBirth == default ? null : Model.DateOfBirth;
+        set => Model.DateOfBirth = value ?? default;
+    }
+}

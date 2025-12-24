@@ -1,0 +1,66 @@
+<MudPaper Class="pa-4">
+    <MudText Typo="Typo.h6" GutterBottom="true">Adresgegevens</MudText>
+    
+    <MudGrid>
+        <MudItem xs="12" md="8">
+            <MudTextField @bind-Value="Model.Street" 
+                          Label="Straatnaam" 
+                          Variant="Variant.Outlined" 
+                          Required="true"
+                          For="@(() => Model.Street)" />
+        </MudItem>
+        <MudItem xs="12" md="2">
+            <MudTextField @bind-Value="Model.HouseNumber" 
+                          Label="Huisnummer" 
+                          Variant="Variant.Outlined" 
+                          Required="true"
+                          For="@(() => Model.HouseNumber)" />
+        </MudItem>
+        <MudItem xs="12" md="2">
+            <MudTextField @bind-Value="Model.HouseNumberAddition" 
+                          Label="Toevoeging" 
+                          Variant="Variant.Outlined"
+                          For="@(() => Model.HouseNumberAddition)" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField @bind-Value="Model.PostalCode" 
+                          Label="Postcode" 
+                          Variant="Variant.Outlined" 
+                          Required="true"
+                          MaxLength="7"
+                          HelperText="bijv. 1234AB"
+                          For="@(() => Model.PostalCode)" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField @bind-Value="Model.City" 
+                          Label="Plaats" 
+                          Variant="Variant.Outlined" 
+                          Required="true"
+                          For="@(() => Model.City)" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField @bind-Value="Model.Province" 
+                          Label="Provincie" 
+                          Variant="Variant.Outlined"
+                          For="@(() => Model.Province)" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudSelect @bind-Value="Model.Country" 
+                       Label="Land" 
+                       Variant="Variant.Outlined" 
+                       Required="true"
+                       For="@(() => Model.Country)">
+                <MudSelectItem Value="@("NLD")">Nederland</MudSelectItem>
+                <MudSelectItem Value="@("BEL")">België</MudSelectItem>
+                <MudSelectItem Value="@("DEU")">Duitsland</MudSelectItem>
+                <MudSelectItem Value="@("FRA")">Frankrijk</MudSelectItem>
+                <MudSelectItem Value="@("GBR")">Verenigd Koninkrijk</MudSelectItem>
+            </MudSelect>
+        </MudItem>
+    </MudGrid>
+</MudPaper>
+
+@code {
+    [Parameter]
+    public AddressViewModel Model { get; set; } = new();
+}
