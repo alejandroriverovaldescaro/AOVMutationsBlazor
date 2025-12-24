@@ -1,0 +1,42 @@
+﻿@page "/"
+
+<PageTitle>Home - AOV Mutatie Aanvragen</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">AOV Mutatie Aanvragen</MudText>
+<MudText Typo="Typo.h6" GutterBottom="true" Color="Color.Secondary">
+    Systeem voor het beheren van mutaties volgens SZV-PRIS schema
+</MudText>
+
+<MudPaper Class="pa-4 mt-4" Elevation="2">
+    <MudText Typo="Typo.h5" GutterBottom="true">Welkom</MudText>
+    <MudText Typo="Typo.body1" Class="mb-4">
+        Dit systeem ondersteunt het invoeren en beheren van AOV (Arbeidsongeschiktheidsverzekering) 
+        mutatie aanvragen volgens het SZV-PRIS schema. Gebruik het menu om een nieuwe mutatie aan te maken 
+        of bestaande mutaties te bekijken.
+    </MudText>
+    
+    <MudDivider Class="my-4" />
+    
+    <MudText Typo="Typo.h6" GutterBottom="true">Functies</MudText>
+    <MudList T="string">
+        <MudListItem T="string" Icon="@Icons.Material.Filled.PersonAdd">
+            <MudText>Inschrijving van nieuwe werknemers</MudText>
+        </MudListItem>
+        <MudListItem T="string" Icon="@Icons.Material.Filled.Edit">
+            <MudText>Wijziging van werknemersgegevens</MudText>
+        </MudListItem>
+        <MudListItem T="string" Icon="@Icons.Material.Filled.PersonRemove">
+            <MudText>Afmelding van werknemers</MudText>
+        </MudListItem>
+        <MudListItem T="string" Icon="@Icons.Material.Filled.Business">
+            <MudText>Arbeidsverhouding- en salarisgegevens</MudText>
+        </MudListItem>
+    </MudList>
+    
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" 
+               StartIcon="@Icons.Material.Filled.Add" 
+               Href="/mutation-wizard" 
+               Class="mt-4">
+        Nieuwe Mutatie Aanmaken
+    </MudButton>
+</MudPaper>

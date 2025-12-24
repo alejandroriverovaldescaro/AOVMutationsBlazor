@@ -1,0 +1,182 @@
+@page "/mutation-wizard"
+@rendermode InteractiveServer
+@inject AOVMutationsDbContext DbContext
+@inject NavigationManager Navigation
+@inject ISnackbar Snackbar
+@using AOVMutationsBlazor.Server.Components.Pages.components
+
+<PageTitle>Nieuwe Mutatie - AOV Mutatie Aanvragen</PageTitle>
+
+<MudText Typo="Typo.h4" GutterBottom="true">Nieuwe AOV Mutatie Aanvraag</MudText>
+
+<EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    
+    <MudStepper @ref="_stepper">
+        
+        <MudStep Title="Type Mutatie">
+            <MudPaper Class="pa-4">
+                <MudText Typo="Typo.h6" GutterBottom="true">Selecteer Type Mutatie</MudText>
+                <MudRadioGroup @bind-Value="model.MutationType">
+                    <MudRadio Value="@("Inschrijving")" Color="Color.Primary">
+                        <MudText>Inschrijving - Nieuwe werknemer aanmelden</MudText>
+                    </MudRadio>
+                    <MudRadio Value="@("Wijziging")" Color="Color.Primary">
+                        <MudText>Wijziging - Wijziging van gegevens</MudText>
+                    </MudRadio>
+                    <MudRadio Value="@("Afmelding")" Color="Color.Primary">
+                        <MudText>Afmelding - Werknemer afmelden</MudText>
+                    </MudRadio>
+                </MudRadioGroup>
+                
+                <MudTextField @bind-Value="model.RequestNumber" 
+                              Label="Aanvraagnummer" 
+                              Variant="Variant.Outlined" 
+                              Class="mt-4"
+                              ReadOnly="true" />
+            </MudPaper>
+        </MudStep>
+        
+        <MudStep Title="Persoonsgegevens">
+            <PersonSection Model="@model.Person" />
+        </MudStep>
+        
+        <MudStep Title="Adresgegevens">
+            <AddressSection Model="@model.Address" />
+        </MudStep>
+        
+        <MudStep Title="Dienstverband">
+            <EmploymentSection Model="@model.Employment" />
+        </MudStep>
+        
+        <MudStep Title="Overzicht">
+            <MudPaper Class="pa-4">
+                <MudText Typo="Typo.h6" GutterBottom="true">Controleer uw gegevens</MudText>
+                
+                <MudText Typo="Typo.subtitle1" Class="mt-4"><strong>Type Mutatie:</strong> @model.MutationType</MudText>
+                <MudText Typo="Typo.subtitle1"><strong>Aanvraagnummer:</strong> @model.RequestNumber</MudText>
+                
+                <MudDivider Class="my-4" />
+                
+                <MudText Typo="Typo.h6" GutterBottom="true">Persoonsgegevens</MudText>
+                <MudText Typo="Typo.body2">BSN: @model.Person.BSN</MudText>
+                <MudText Typo="Typo.body2">Naam: @model.Person.FirstName @model.Person.Prefix @model.Person.LastName</MudText>
+                <MudText Typo="Typo.body2">Geboortedatum: @model.Person.DateOfBirth.ToShortDateString()</MudText>
+                
+                <MudDivider Class="my-4" />
+                
+                <MudText Typo="Typo.h6" GutterBottom="true">Adresgegevens</MudText>
+                <MudText Typo="Typo.body2">Adres: @model.Address.Street @model.Address.HouseNumber @model.Address.HouseNumberAddition</MudText>
+                <MudText Typo="Typo.body2">Postcode: @model.Address.PostalCode</MudText>
+                <MudText Typo="Typo.body2">Plaats: @model.Address.City</MudText>
+                
+                <MudDivider Class="my-4" />
+                
+                <MudText Typo="Typo.h6" GutterBottom="true">Dienstverband</MudText>
+                <MudText Typo="Typo.body2">Startdatum: @model.Employment.StartDate.ToShortDateString()</MudText>
+                <MudText Typo="Typo.body2">Contracttype: @model.Employment.ContractType</MudText>
+                <MudText Typo="Typo.body2">Functie: @model.Employment.JobTitle</MudText>
+                
+                <MudButton ButtonType="ButtonType.Submit" 
+                          Variant="Variant.Filled" 
+                          Color="Color.Success" 
+                          StartIcon="@Icons.Material.Filled.Save"
+                          Class="mt-4">
+                    Opslaan
+                </MudButton>
+            </MudPaper>
+        </MudStep>
+        
+    </MudStepper>
+</EditForm>
+
+@code {
+    private MudStepper _stepper = null!;
+    private MutationRequestViewModel model = new();
+
+    protected override void OnInitialized()
+    {
+        model.RequestNumber = $"MUT-{DateTime.Now:yyyyMMdd}-{Guid.NewGuid().ToString()[..8].ToUpper()}";
+        model.RequestDate = DateTime.Now;
+        model.MutationType = "Inschrijving";
+    }
+
+    private async Task OnValidSubmit()
+    {
+        try
+        {
+            // Save Person
+            var person = new Person
+            {
+                BSN = model.Person.BSN,
+                EmployeeNumber = model.Person.EmployeeNumber,
+                FirstName = model.Person.FirstName,
+                Initials = model.Person.Initials,
+                Prefix = model.Person.Prefix,
+                LastName = model.Person.LastName,
+                DateOfBirth = model.Person.DateOfBirth,
+                Gender = model.Person.Gender,
+                Nationality = model.Person.Nationality,
+                PlaceOfBirth = model.Person.PlaceOfBirth,
+                CountryOfBirth = model.Person.CountryOfBirth,
+                Email = model.Person.Email,
+                PhoneNumber = model.Person.PhoneNumber
+            };
+            DbContext.Persons.Add(person);
+            
+            // Save Address
+            var address = new Address
+            {
+                Street = model.Address.Street,
+                HouseNumber = model.Address.HouseNumber,
+                HouseNumberAddition = model.Address.HouseNumberAddition,
+                PostalCode = model.Address.PostalCode,
+                City = model.Address.City,
+                Province = model.Address.Province,
+                Country = model.Address.Country
+            };
+            DbContext.Addresses.Add(address);
+            
+            // Save Employment
+            var employment = new Employment
+            {
+                StartDate = model.Employment.StartDate,
+                EndDate = model.Employment.EndDate,
+                ContractType = model.Employment.ContractType,
+                JobTitle = model.Employment.JobTitle,
+                Department = model.Employment.Department,
+                SalaryAmount = model.Employment.SalaryAmount,
+                SalaryPeriod = model.Employment.SalaryPeriod,
+                WorkHoursPerWeek = model.Employment.WorkHoursPerWeek,
+                EmploymentStatus = model.Employment.EmploymentStatus,
+                IncomeCode = model.Employment.IncomeCode,
+                SectorCode = model.Employment.SectorCode,
+                IsAOVInsured = model.Employment.IsAOVInsured
+            };
+            DbContext.Employments.Add(employment);
+            
+            // Save Mutation Request
+            var mutationRequest = new MutationRequest
+            {
+                RequestNumber = model.RequestNumber,
+                RequestDate = model.RequestDate,
+                MutationType = model.MutationType,
+                Status = model.Status,
+                Person = person,
+                Address = address,
+                Employment = employment,
+                CreatedAt = DateTime.Now
+            };
+            DbContext.MutationRequests.Add(mutationRequest);
+            
+            await DbContext.SaveChangesAsync();
+            
+            Snackbar.Add("Mutatie aanvraag succesvol opgeslagen!", Severity.Success);
+            Navigation.NavigateTo("/");
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Fout bij opslaan: {ex.Message}", Severity.Error);
+        }
+    }
+}

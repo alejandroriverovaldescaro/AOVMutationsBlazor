@@ -1,0 +1,91 @@
+@page "/mutations"
+@rendermode InteractiveServer
+@inject AOVMutationsDbContext DbContext
+
+<PageTitle>Mutaties Overzicht - AOV Mutatie Aanvragen</PageTitle>
+
+<MudText Typo="Typo.h4" GutterBottom="true">Mutaties Overzicht</MudText>
+
+<MudPaper Class="pa-4 mt-4" Elevation="2">
+    <MudTable Items="@mutations" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@loading" LoadingProgressColor="Color.Info">
+        <HeaderContent>
+            <MudTh>Aanvraagnummer</MudTh>
+            <MudTh>Type</MudTh>
+            <MudTh>Status</MudTh>
+            <MudTh>Datum</MudTh>
+            <MudTh>Werknemer</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Aanvraagnummer">@context.RequestNumber</MudTd>
+            <MudTd DataLabel="Type">
+                <MudChip T="string" Size="Size.Small" Color="GetChipColor(context.MutationType)">
+                    @context.MutationType
+                </MudChip>
+            </MudTd>
+            <MudTd DataLabel="Status">
+                <MudChip T="string" Size="Size.Small" Color="GetStatusColor(context.Status)">
+                    @context.Status
+                </MudChip>
+            </MudTd>
+            <MudTd DataLabel="Datum">@context.RequestDate.ToShortDateString()</MudTd>
+            <MudTd DataLabel="Werknemer">
+                @if (context.Person != null)
+                {
+                    <text>@context.Person.FirstName @context.Person.LastName</text>
+                }
+            </MudTd>
+        </RowTemplate>
+        <NoRecordsContent>
+            <MudText>Geen mutaties gevonden</MudText>
+        </NoRecordsContent>
+    </MudTable>
+</MudPaper>
+
+@code {
+    private List<MutationRequest> mutations = new();
+    private bool loading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadMutations();
+    }
+
+    private async Task LoadMutations()
+    {
+        loading = true;
+        try
+        {
+            mutations = await Task.Run(() => 
+                DbContext.MutationRequests
+                    .OrderByDescending(m => m.RequestDate)
+                    .ToList()
+            );
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+    private Color GetChipColor(string mutationType)
+    {
+        return mutationType switch
+        {
+            "Inschrijving" => Color.Success,
+            "Wijziging" => Color.Info,
+            "Afmelding" => Color.Warning,
+            _ => Color.Default
+        };
+    }
+
+    private Color GetStatusColor(string status)
+    {
+        return status switch
+        {
+            "Concept" => Color.Default,
+            "Ingediend" => Color.Info,
+            "Verwerkt" => Color.Success,
+            _ => Color.Default
+        };
+    }
+}
