@@ -1,0 +1,14 @@
+/AOVMutationsBlazor
+│
+├── AOVMutationsBlazor.sln
+├── /AOVMutationsBlazor.Data           // EF Core models and DbContext
+├── /AOVMutationsBlazor.Shared         // Shared data/models/utils
+├── /AOVMutationsBlazor.Server         // API/backend, if needed
+└── /AOVMutationsBlazor.Client         // Blazor Server (or WASM) UI
+    ├── /Pages
+    │    ├── Index.razor               // Welcome/home
+    │    ├── MutationWizard.razor      // Main data entry wizard
+    │    ├── components/PersonSection.razor
+    │    ├── components/AddressSection.razor
+    │    └── ...etc.
+    └── /wwwroot
